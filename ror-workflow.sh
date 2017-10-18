@@ -13,32 +13,34 @@ echo "
 
 if [ ! -z "$1" ]; then
 
-    #sudo rm -r $1
-    #mkdir $1
-    #cd $1
-    #cp ../templates/* .
-    #bundle install
-    #rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
+    sudo rm -r $1
+    mkdir $1
+    cd $1
+    cp ../templates/* .
+    bundle install
+    rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
     bin/rails db:environment:set RAILS_ENV=development
-    #bundle exec rake db:create
-    #rails generate rspec:install
-    #rails generate devise:install
-    #rails generate devise:views
+    rails generate rspec:install
+    rails generate devise:install
+    rails generate devise:views
     rails generate devise User
-    bundle exec rake db:migrate
+    bin/rails db:drop db:create db:migrate RAILS_ENV=developmen
+    rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
     #
     #
     # Devise Config
-    clear
-    echo "\n\n1 + Add this line to config/routes.rb"
-    echo "root to: 'home#index'\n"
+    echo "\n\n1 + Add these two lines to config/routes.rb"
+    echo "root to: 'home#index'"
+    echo "devise_for :users\n"
     #
     echo "2 + Add this line to 'config/environments/development.rb' "
     echo "config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }\n"
     #
     echo "3 + Optional: Add this line to application_controller.rb"
     echo "before_action :authenticate_user! \n"
+    #
+    echo "4 + "
 
     read -p "next step? (y/n) " -n 1
     echo "Good Bye"
