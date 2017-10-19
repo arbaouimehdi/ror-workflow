@@ -9,20 +9,12 @@ $(tput setaf 2)#   | | \ \| |__| | | \ \     \  /\  | (_) | |  |   <| | | | (_) 
 $(tput setaf 2)#   |_|  \_\\____/|_|  \_\     \/  \/ \___/|_|  |_|\_|_| |_|\___/ \_/\_/
 "
 
-# Colors
-RED='\033[0;31m'
-GREEN=''
-
 #==================================
 #
 #        If App Name is Defined
 #
 #==================================#
 if [ ! -z "$1" ]; then
-
-    # Check if the folder already created
-    # If so, remove it
-    rm -r $1
 
     # Create and Enter to the Folder of the new app
     mkdir $1
@@ -35,25 +27,25 @@ if [ ! -z "$1" ]; then
     bundle install
 
     # Create the New APP
-    rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
+    bundle exec rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
 
     # Set the Environment to development
-    bin/rails db:environment:set RAILS_ENV=development
+    bundle exec rails db:environment:set RAILS_ENV=development
 
     # Install Rspec
-    rails generate rspec:install
+    bundle exec rails generate rspec:install
 
     # Install Cucumber
-    rails generate cucumber:install
+    bundle exec rails generate cucumber:install
 
     # Install Devise, plus generate the Views and the Migration
-    rails generate devise:install
-    rails generate devise:views
-    rails generate devise User
+    bundle exec rails generate devise:install
+    bundle exec rails generate devise:views
+    bundle exec rails generate devise User
 
 
     # Create and Migrate the Database
-    bin/rails db:drop db:create db:migrate RAILS_ENV=development
+    bundle exec rake db:create db:migrate RAILS_ENV=development
     rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
     # Add Devise and Home routes
