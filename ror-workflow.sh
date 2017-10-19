@@ -15,26 +15,26 @@ if [ ! -z "$1" ]; then
 
     # Check if the folder already created
     # If so, remove it
-    sudo rm -r $1
+    #sudo rm -r $1
 
     # Create and Enter to the Folder of the new app
-    mkdir $1
-    cd $1
+    #mkdir $1
+    #cd $1
 
     # Copy the Gemfile and .gitignore to the application folder
-    cp ../templates/Gemfile ../templates/.gitignore .
+    #cp ../templates/Gemfile ../templates/.gitignore .
 
     # Install Bundles
-    bundle install
+    #bundle install
 
     # Create the New APP
-    rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
+    #rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
 
     # Set the Environment to development
-    bin/rails db:environment:set RAILS_ENV=development
+    #bin/rails db:environment:set RAILS_ENV=development
 
     # Install Rspec
-    rails generate rspec:install
+    #rails generate rspec:install
 
     # Install Cucumber
     rails generate cucumber:install
@@ -101,6 +101,7 @@ if [ ! -z "$1" ]; then
 
       # Install Yarn Dependencies
       cp ../templates/package.json .
+      sed "1,/my-app/ s/$1/replacement/" package.json
       yarn install
 
       #
