@@ -1,0 +1,24 @@
+/*==================================
+#
+#       External Dependencies
+#
+==================================*/
+@import '~font-awesome/scss/font-awesome.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+
+/*==================================
+#
+#               Common
+#
+==================================*/
+@import 'common/variables.scss';
+@import 'common/fonts.scss';
+
+/*==================================
+#
+#             Layouts
+#
+==================================*/
+@import 'layouts/header.scss';
+@import 'layouts/login.scss';
+@import 'responsive/responsive.scss';
