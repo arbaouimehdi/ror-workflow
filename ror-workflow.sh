@@ -12,6 +12,7 @@ $(tput setaf 2)#   |_|  \_\\____/|_|  \_\     \/  \/ \___/|_|  |_|\_|_| |_|\___/
 #==================================
 #
 #        If App Name is Defined
+#            $1: App Name
 #
 #==================================#
 if [ ! -z "$1" ]; then
@@ -29,8 +30,8 @@ if [ ! -z "$1" ]; then
     # Create the New APP
     bundle exec rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test
 
-    # Set the Environment to development
-    bundle exec rails db:environment:set RAILS_ENV=development
+    # Create a Database
+    bundle exec rake db:create
 
     # Install Rspec
     bundle exec rails generate rspec:install
@@ -43,9 +44,7 @@ if [ ! -z "$1" ]; then
     bundle exec rails generate devise:views
     bundle exec rails generate devise User
 
-
-    # Create and Migrate the Database
-    bundle exec rake db:create db:migrate RAILS_ENV=development
+    # Home Controller
     rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
     # Add Devise and Home routes
@@ -66,22 +65,40 @@ if [ ! -z "$1" ]; then
     sed "1,/my-app/ s/$1/replacement/" package.json
     yarn install
 
-    # Remove Unused JS Files and Copy The New Ones
-    rm -r app/assets/javascripts app/assets/config
-    cp -R ../templates/app/javascript/packs app/javascript/
-
-    # Copy Webpack Config
+    #
+    #
+    #
+    # Webpack
     cp -R ../templates/config/webpack config/
 
-    # Remove Unused CSS Files and Add The New Ones
+    #
+    #
+    #
+    # JS
+    rm -r app/assets/javascripts app/assets/config
+    cp -R ../templates/app/javascript/packs/js app/javascript/packs/
+    cp -R ../templates/app/javascript/packs/application.js app/javascript/packs/
+
+
+    #
+    #
+    #
+    # CSS
     rm app/assets/stylesheets/application.css
-    cp -R ../templates/app/assets/stylesheets app/assets/
+    cp -R ../templates/app/javascript/packs/css app/javascript/packs/
+    cp -R ../templates/app/javascript/packs/application.scss app/javascript/packs/
 
     # Copy View Files
     cp ../templates/app/views/layouts/* app/views/layouts/
 
     # Change the Application Title
     sed "1,/myApp/ s/$1/replacement/" app/views/layouts/application.html.erb
+
+    # Set the Environment to development
+    bundle exec rails db:environment:set RAILS_ENV=development
+
+    # Create and Migrate the Database
+    bundle exec rake db:migrate RAILS_ENV=development
 
     #
     #
@@ -109,6 +126,18 @@ if [ ! -z "$1" ]; then
     tput setaf 3; echo "+ rails server"
     tput setaf 3; echo "+ yarn dev_server"
     tput setaf 3; echo "+ rails console"
+
+    # ###########################
+    #                           #
+    #                           #
+    #                           #
+    #         Deploying         #
+    #                           #
+    #                           #
+    #                           #
+    # ###########################
+    #heroku config | grep CLEARDB_DATABASE_URL
+    #heroku config:set DATABASE_URL="mysql2://b01c2d40632c4c:43ca5293@eu-cdbr-west-01.cleardb.com/heroku_f2deb3b12545efa?reconnect=true"
 
 
 #==================================

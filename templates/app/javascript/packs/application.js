@@ -3,7 +3,7 @@
  #             + CSS File
  #
  ==================================*/
-import '../../assets/stylesheets/application.scss'
+import 'application.scss'
 
 /**==================================
  #
@@ -14,7 +14,7 @@ import '../../assets/stylesheets/application.scss'
 /*==================================
 #       External Dependencies
 ==================================*/
-import 'bootstrap';
+import '../../../node_modules/bootstrap';
 
 /*==================================
 #         Local dependencies
