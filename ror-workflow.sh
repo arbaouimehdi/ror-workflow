@@ -66,6 +66,7 @@ if [ ! -z "$1" ]; then
     cp ../../templates/spec/rails_helper.rb spec/
 
     # Factory Girl
+    mkdir spec/factories
     cp ../../templates/spec/factories/users.rb spec/factories/
 
     # Guard
