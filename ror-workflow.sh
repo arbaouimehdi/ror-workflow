@@ -29,11 +29,11 @@ if [ ! -z "$1" ]; then
     # ###########################
     "
     # Create and Enter to the Folder of the new app
-    mkdir $1
-    cd $1
+    mkdir projects/$1
+    cd projects/$1
 
     # Copy the Gemfile and .gitignore to the application folder
-    cp ../templates/Gemfile ../templates/.gitignore .
+    cp ../../templates/Gemfile ../../templates/.gitignore .
 
     # Install Bundles
     bundle install
@@ -59,20 +59,20 @@ if [ ! -z "$1" ]; then
     rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
     # Add Devise and Home routes
-    cp ../templates/config/routes.rb config/
+    cp ../../templates/config/routes.rb config/
 
     # Rspec Config File
     echo  "'rails_helper.rb' will be modified with the new version"
-    cp ../templates/spec/rails_helper.rb spec/
+    cp ../../templates/spec/rails_helper.rb spec/
 
     # Factory Girl
-    cp ../templates/spec/factories/users.rb spec/factories/
+    cp ../../templates/spec/factories/users.rb spec/factories/
 
     # Guard
     bundle exec guard init rspec
 
     # Install Yarn Dependencies
-    cp ../templates/package.json .
+    cp ../../templates/package.json .
     sed "1,/my-app/ s/$1/replacement/" package.json
     yarn install
 
@@ -80,15 +80,15 @@ if [ ! -z "$1" ]; then
     #
     #
     # Webpack
-    cp -R ../templates/config/webpack config/
+    cp -R ../../templates/config/webpack config/
 
     #
     #
     #
     # JS
     rm -r app/assets/javascripts app/assets/config
-    cp -R ../templates/app/javascript/packs/js app/javascript/packs/
-    cp -R ../templates/app/javascript/packs/application.js app/javascript/packs/
+    cp -R ../../templates/app/javascript/packs/js app/javascript/packs/
+    cp -R ../../templates/app/javascript/packs/application.js app/javascript/packs/
 
 
     #
@@ -96,11 +96,11 @@ if [ ! -z "$1" ]; then
     #
     # CSS
     rm app/assets/stylesheets/application.css
-    cp -R ../templates/app/javascript/packs/css app/javascript/packs/
-    cp -R ../templates/app/javascript/packs/application.scss app/javascript/packs/
+    cp -R ../../templates/app/javascript/packs/css app/javascript/packs/
+    cp -R ../../templates/app/javascript/packs/application.scss app/javascript/packs/
 
     # Copy View Files
-    cp ../templates/app/views/layouts/* app/views/layouts/
+    cp ../../templates/app/views/layouts/* app/views/layouts/
 
     # Change the Application Title
     sed "1,/myApp/ s/$1/replacement/" app/views/layouts/application.html.erb
@@ -159,9 +159,6 @@ if [ ! -z "$1" ]; then
         git commit -m "Hello World"
         git push -u origin master
 
-        # Connect the heroku App to github
-        tput setaf 9;echo "Connect the Heroku App sinjapp-$1 to the $1 Github Repository from the link above:"
-        tput setaf 9;echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github"
 
         echo "
         # ###########################
@@ -175,7 +172,13 @@ if [ ! -z "$1" ]; then
         # ###########################
         "
         tput setaf 2; echo "✔ - Successful Installation \n"
-        tput setaf 9;echo "+ Run these commands on separate consoles"
+
+        # Connect the heroku App to github
+        tput setaf 9;echo "Connect the Heroku App sinjapp-$1 to the $1 Github Repository from the link above:"
+        tput setaf 3;echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github\n"
+
+        # Commands to run locally
+        tput setaf 9;echo "+ Commands to run locally on seperate Console Windows:"
         tput setaf 3; echo "→ rails server"
         tput setaf 3; echo "→ yarn dev_server"
         tput setaf 3; echo "→ rails console"
