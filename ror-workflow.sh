@@ -141,25 +141,47 @@ if [ ! -z "$1" ]; then
     DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}
     heroku config:set DATABASE_URL=$DATABASE_NEW_URL
 
-    # Heroku URL to deploy the app via (Connect to github)
-    echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github"
+    # Create a New Github Repository
+    tput setaf 2; echo "\n\nCreate a New Github Repository with the name $1"
 
-    echo "
-    # ###########################
-    #                           #
-    #                           #
-    #                           #
-    #          The End          #
-    #                           #
-    #                           #
-    #                           #
-    # ###########################
-    "
-    tput setaf 2; echo "✔ - Successful Installation \n"
-    tput setaf 9;echo "+ Run these commands on separate consoles"
-    tput setaf 3; echo "→ rails server"
-    tput setaf 3; echo "→ yarn dev_server"
-    tput setaf 3; echo "→ rails console"
+    # Github Repository Confirmation
+    read -p "Did you already create a new repository with the name $1 on Github? (y/n) " -n 1
+
+    #
+    #
+    # If the github repository is created
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+
+        # Init, Add, Commit and Push Project Files
+        git init
+        git add -A
+        git remote add origin https://github.com/Clarkom/$1.git
+        git commit -m "Hello World"
+        git push -u origin master
+
+        # Connect the heroku App to github
+        tput setaf 9;echo "Connect the Heroku App sinjapp-$1 to the $1 Github Repository from the link above:"
+        tput setaf 9;echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github"
+
+        echo "
+        # ###########################
+        #                           #
+        #                           #
+        #                           #
+        #          The End          #
+        #                           #
+        #                           #
+        #                           #
+        # ###########################
+        "
+        tput setaf 2; echo "✔ - Successful Installation \n"
+        tput setaf 9;echo "+ Run these commands on separate consoles"
+        tput setaf 3; echo "→ rails server"
+        tput setaf 3; echo "→ yarn dev_server"
+        tput setaf 3; echo "→ rails console"
+    fi
+
+
 
 #==================================
 #
