@@ -44,9 +44,6 @@ if [ ! -z "$1" ]; then
     # Create a Database
     bundle exec rake db:create
 
-    # Install Rspec
-    bundle exec rails generate rspec:install
-
     # Install Cucumber
     bundle exec rails generate cucumber:install
 
@@ -55,8 +52,11 @@ if [ ! -z "$1" ]; then
     bundle exec rails generate devise:views
     bundle exec rails generate devise User
 
+    # Install Rspec
+    bundle exec rails generate rspec:install
+
     # Home Controller
-    rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
+    bundle exec rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
     # Add Devise and Home routes
     cp ../../templates/config/routes.rb config/
@@ -145,9 +145,6 @@ if [ ! -z "$1" ]; then
     NEW_NAME="mysql2"
     DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}
     heroku config:set DATABASE_URL=$DATABASE_NEW_URL
-
-    # Migrate
-    heroku run rake db:migrate
 
     # Create a New Github Repository
     tput setaf 2; echo "\n\nCreate a New Github Repository with the name $1"
