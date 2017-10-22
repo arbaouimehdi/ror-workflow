@@ -141,6 +141,9 @@ if [ ! -z "$1" ]; then
     DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}
     heroku config:set DATABASE_URL=$DATABASE_NEW_URL
 
+    # Migrate
+    heroku run rake db:migrate
+
     # Create a New Github Repository
     tput setaf 2; echo "\n\nCreate a New Github Repository with the name $1"
 
