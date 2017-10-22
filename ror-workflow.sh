@@ -17,6 +17,17 @@ $(tput setaf 2)#   |_|  \_\\____/|_|  \_\     \/  \/ \___/|_|  |_|\_|_| |_|\___/
 #==================================#
 if [ ! -z "$1" ]; then
 
+    echo "
+    # ###########################
+    #                           #
+    #                           #
+    #                           #
+    #      1 - Installation     #
+    #                           #
+    #                           #
+    #                           #
+    # ###########################
+    "
     # Create and Enter to the Folder of the new app
     mkdir $1
     cd $1
@@ -100,45 +111,55 @@ if [ ! -z "$1" ]; then
     # Create and Migrate the Database
     bundle exec rake db:migrate RAILS_ENV=development
 
-    #
-    #
-    #
-    #
-    #
-    #
-    # Messages
-    echo "1 + Add this line to 'config/environments/development.rb' "
-    tput setaf 3; echo "config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }\n"
-
-    echo "2 + Optional: Add this line to 'app/controllers/application_controller.rb'"
-    tput setaf 3; echo "before_action :authenticate_user! \n"
-
-    #
-    #
-    #
-    #
-    #
-    #
-    #
-    # Commands to Run
-    tput setaf 2; echo "Successful Installation ✌ \n\n"
-    echo "7 + Run these commands on separate consoles"
-    tput setaf 3; echo "+ rails server"
-    tput setaf 3; echo "+ yarn dev_server"
-    tput setaf 3; echo "+ rails console"
-
+    echo "
     # ###########################
     #                           #
     #                           #
     #                           #
-    #         Deploying         #
+    #         Deployment        #
     #                           #
     #                           #
     #                           #
     # ###########################
-    #heroku config | grep CLEARDB_DATABASE_URL
-    #heroku config:set DATABASE_URL="mysql2://b01c2d40632c4c:43ca5293@eu-cdbr-west-01.cleardb.com/heroku_f2deb3b12545efa?reconnect=true"
+    "
+    # Login
+    heroku login
 
+    # Create an app with the same name as the project name
+    heroku apps:create sinjapp-$1
+
+    # Select the app
+    heroku git:remote -a sinjapp-$1
+
+    # Attaching cleardb to the app
+    heroku addons:create cleardb:ignite
+
+    # Set the new cleardb database URL
+    DATABASE_URL=$(heroku config | grep CLEARDB_DATABASE_URL)
+    ORIGINAL_NAME="CLEARDB_DATABASE_URL: mysql"
+    NEW_NAME="mysql2"
+    DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}
+    heroku config:set DATABASE_URL=$DATABASE_NEW_URL
+
+    # Heroku URL to deploy the app via (Connect to github)
+    echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github"
+
+    echo "
+    # ###########################
+    #                           #
+    #                           #
+    #                           #
+    #          The End          #
+    #                           #
+    #                           #
+    #                           #
+    # ###########################
+    "
+    tput setaf 2; echo "✔ - Successful Installation \n"
+    tput setaf 9;echo "+ Run these commands on separate consoles"
+    tput setaf 3; echo "→ rails server"
+    tput setaf 3; echo "→ yarn dev_server"
+    tput setaf 3; echo "→ rails console"
 
 #==================================
 #
