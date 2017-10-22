@@ -73,7 +73,7 @@ if [ ! -z "$1" ]; then
 
     # Install Yarn Dependencies
     cp ../../templates/package.json .
-    sed "1,/my-app/ s/$1/replacement/" package.json
+    sed -i -e 's/my-app/$1/g' package.json
     yarn install
 
     #
@@ -103,7 +103,11 @@ if [ ! -z "$1" ]; then
     cp ../../templates/app/views/layouts/* app/views/layouts/
 
     # Change the Application Title
-    sed "1,/myApp/ s/$1/replacement/" app/views/layouts/application.html.erb
+    sed -i -e 's/myApp/$1/g' app/views/layouts/application.html.erb
+
+    # Update ReadMe
+    rm README.md
+    echo "# $1" > README.md
 
     # Set the Environment to development
     bundle exec rails db:environment:set RAILS_ENV=development
