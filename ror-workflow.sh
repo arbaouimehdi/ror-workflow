@@ -74,7 +74,7 @@ if [ ! -z "$1" ]; then
 
     # Install Yarn Dependencies
     cp ../../templates/package.json .
-    sed -i -e 's/my-app/$1/g' package.json
+    sed -i -e "s/my-app/$1/g" package.json
     yarn install
 
     #
@@ -104,7 +104,7 @@ if [ ! -z "$1" ]; then
     cp ../../templates/app/views/layouts/* app/views/layouts/
 
     # Change the Application Title
-    sed -i -e 's/myApp/$1/g' app/views/layouts/application.html.erb
+    sed -i -e "s/myApp/$1/g" app/views/layouts/application.html.erb
 
     # Update ReadMe
     rm README.md
