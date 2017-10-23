@@ -1,9 +1,18 @@
 Rails.application.routes.draw do
 
-  # Home Page
-  root to: 'home#index'
+  #
+  #
+  #
+  # Backend - Admin
+  namespace :admin do
 
-  # Devise
+  end
+
+  #
+  #
+  #
+  # Frontend
+  root to: 'home#index'
   devise_for :users
 
 end
