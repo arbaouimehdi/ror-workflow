@@ -44,6 +44,9 @@ if [ ! -z "$1" ]; then
     # Create a Database
     bundle exec rake db:create
 
+    # Install Rspec
+    bundle exec rails generate rspec:install
+
     # Install Cucumber
     bundle exec rails generate cucumber:install
 
@@ -52,9 +55,6 @@ if [ ! -z "$1" ]; then
     bundle exec rails generate devise:views
     bundle exec rails generate devise User
 
-    # Install Rspec
-    bundle exec rails generate rspec:install
-
     # Home Controller
     bundle exec rails generate controller home index --no-helper --no-assets --no-controller-specs --no-view-specs
 
@@ -62,7 +62,7 @@ if [ ! -z "$1" ]; then
     cp ../../templates/config/routes.rb config/
 
     # Rspec Config File
-    echo  "'rails_helper.rb' will be modified with the new version"
+    echo "'rails_helper.rb' will be modified with the new version"
     cp ../../templates/spec/rails_helper.rb spec/
 
     # Factory Girl
@@ -74,7 +74,10 @@ if [ ! -z "$1" ]; then
 
     # Install Yarn Dependencies
     cp ../../templates/package.json .
-    sed -i -e "s/my-app/$1/g" package.json
+    sed "s/my-app/$1/" package.json > package2.json
+    rm package.json
+    mv package2.json package.json
+
     yarn install
 
     #
@@ -104,7 +107,9 @@ if [ ! -z "$1" ]; then
     cp ../../templates/app/views/layouts/* app/views/layouts/
 
     # Change the Application Title
-    sed -i -e "s/myApp/$1/g" app/views/layouts/application.html.erb
+    sed "s/myApp/$1/" app/views/layouts/application.html.erb > app/views/layouts/application.html.erb2
+    rm app/views/layouts/application.html.erb2
+    mv app/views/layouts/application.html.erb2 app/views/layouts/application.html.erb
 
     # Update ReadMe
     rm README.md
@@ -147,10 +152,11 @@ if [ ! -z "$1" ]; then
     heroku config:set DATABASE_URL=$DATABASE_NEW_URL
 
     # Create a New Github Repository
-    tput setaf 2; echo "\n\nCreate a New Github Repository with the name $1"
+    tput setaf 2;
+    echo "\n\nCreate a New Github Repository with the name $1"
 
     # Github Repository Confirmation
-    read -p "Did you already create a new repository with the name $1 on Github? (y/n) " -n 1
+    read -p "$(tput setaf 9)Did you already create a new repository with the name $(tput setaf 2)'$1' $(tput setaf 9)on Github? (y/n) " -n 1
 
     #
     #
@@ -164,7 +170,7 @@ if [ ! -z "$1" ]; then
         git commit -m "Hello World"
         git push -u origin master
 
-
+        tput setaf 2;
         echo "
         # ###########################
         #                           #
@@ -179,14 +185,18 @@ if [ ! -z "$1" ]; then
         tput setaf 2; echo "✔ - Successful Installation \n"
 
         # Connect the heroku App to github
-        tput setaf 9;echo "Connect the Heroku App sinjapp-$1 to the $1 Github Repository from the link above:"
-        tput setaf 3;echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github\n"
+        tput setaf 9;echo "Connect the Heroku App $(tput setaf 2)'sinjapp-$1' $(tput setaf 9)to the $(tput setaf 2)'$1' $(tput setaf 9)Github Repository from the link above:"
+        tput setaf 5;echo "https://dashboard.heroku.com/apps/sinjapp-$1/deploy/github\n"
 
         # Commands to run locally
-        tput setaf 9;echo "+ Commands to run locally on seperate Console Windows:"
-        tput setaf 3; echo "→ rails server"
-        tput setaf 3; echo "→ yarn dev_server"
-        tput setaf 3; echo "→ rails console"
+        tput setaf 9;echo "+ Database Migration Command:"
+        tput setaf 5; echo "→ heroku run rake db:migrate\n"
+
+        tput setaf 9;echo "+ Local Server Commands:"
+        tput setaf 5; echo "→ cd project/$1"
+        tput setaf 5; echo "→ rails server"
+        tput setaf 5; echo "→ yarn dev_server"
+        tput setaf 5; echo "→ rails console"
     fi
 
 
