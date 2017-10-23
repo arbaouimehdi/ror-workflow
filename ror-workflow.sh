@@ -27,21 +27,21 @@ echo "
 #                            #
 # ############################"
                                                                               # The Begining
-mkdir projects/$1                                                             # 0 - Finish
-cd projects/$1                                                                # 1 - Finish
+mkdir projects/$1                                                             # 0 -
+cd projects/$1                                                                # 1 -
 cp ../../templates/Gemfile ../../templates/.gitignore .                       # 1 - Copy the Gemfile and .gitignore to the application folder
 bundle install                                                                # 2 - Install Bundles
-rails new . -d mysql --webpack --skip-git --skip-gemfile --skip-test          # 3 - Create the New APP
+bundle exec rails new . -d mysql --webpack --skip-git \
+--skip-gemfile --skip-test                                                    # 3 - Create the New APP
 cp ../../templates/config/webpacker.yml config/                               # 4 - Copy webpacker.yml
 rake db:create                                                                # 5 - Create a Database
-sudo pkill -9 rails && sudo pkill -9 spring && spring stop                    # 6 - 
-rails generate rspec:install                                                  # 8 - Install Rspec
-rails generate cucumber:install                                               # 9 - Install Cucumber
-rails generate devise:install                                                 # 10 - Install Devise, plus generate the Views and the Migration
-rails generate devise:views                                                   # 11
-rails generate devise User                                                    # 12
-rails generate controller home index \
---no-helper --no-assets --no-controller-specs --no-view-specs                 # 13 - Generate a Home Controller
+bundle exec rails generate rspec:install                                      # 8 - Install Rspec
+bundle exec rails generate cucumber:install                                   # 9 - Install Cucumber
+bundle exec rails generate devise:install                                     # 10 - Install Devise, plus generate the Views and the Migration
+bundle exec rails generate devise:views                                       # 11
+bundle exec rails generate devise User                                        # 12
+bundle exec rails generate controller home index\
+ --no-helper --no-assets --no-controller-specs --no-view-specs
 cp ../../templates/config/routes.rb config/                                   # 14 - Add Devise and Home routes
 echo "'rails_helper.rb' will be modified with the new version"                # 15 -
 cp ../../templates/spec/rails_helper.rb spec/                                 # 16 -
@@ -54,11 +54,9 @@ rm package.json                                                               # 
 mv package2.json package.json                                                 # 23 -
 yarn install
 cp -R ../../templates/config/webpack config/                                  # 23 -
-rm -r app/assets/config app/javascript                                        # 24 -
+rm -r app/assets app/javascript
 cp -r ../../templates/app/javascript app/                                     # 25 -
-cp -r ../../templates/app/assets/javascripts/ app/assets/                     # 26 -
-rm app/assets/stylesheets/application.css                                     # 27 -
-cp -r ../../templates/app/assets/stylesheets/ app/assets/                     # 28 -
+cp -r ../../templates/app/assets app/                                         # 26 -
 cp ../../templates/app/views/layouts/* app/views/layouts/                     # 29 -
 sed "s/myApp/$1/" app/views/layouts/application.html.erb >\
 app/views/layouts/application.html.erb2
@@ -81,7 +79,6 @@ echo "
 #                           #
 # ###########################
 "
-
 heroku login                                                                 # 35 - Heroku Login
 heroku apps:create sinjapp-$1                                                # 36 - Create a Heroku Application
 heroku git:remote -a sinjapp-$1                                              # 37 - Select the Application
