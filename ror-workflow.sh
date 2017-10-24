@@ -45,8 +45,6 @@ bundle exec rails generate controller home index\
 cp ../../templates/config/routes.rb config/                                   # - Add Devise and Home routes
 echo "'rails_helper.rb' will be modified with the new version"                # -
 cp ../../templates/spec/rails_helper.rb spec/                                 # -
-mkdir spec/factories                                                          # -
-cp ../../templates/spec/factories/users.rb spec/factories/                    # -
 guard init rspec                                                              # -
 
 echo "
