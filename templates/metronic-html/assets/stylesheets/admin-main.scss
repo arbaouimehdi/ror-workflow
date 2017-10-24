@@ -13,6 +13,7 @@
 ==================================*/
 @import 'layouts/header/_config';
 @import 'layouts/aside/_config';
+@import 'layouts/footer/_config';
 
 /*==================================
 #
@@ -30,5 +31,10 @@
 @import 'layouts/aside/aside-left';
 @import 'layouts/aside/aside-right';
 @import 'layouts/aside/aside-header-menu-mobile';
+
+// Footer
+@import 'layouts/footer/footer';
+
+
 
 
