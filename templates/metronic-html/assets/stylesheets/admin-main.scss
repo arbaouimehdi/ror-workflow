@@ -1,0 +1,34 @@
+/**
+*
+*
+* Admin Dashboard Styles
+*
+*
+*/
+
+/*==================================
+#
+#               Configs
+#
+==================================*/
+@import 'layouts/header/_config';
+@import 'layouts/aside/_config';
+
+/*==================================
+#
+#               Layouts
+#
+==================================*/
+
+// Header
+@import 'layouts/header/brand';
+@import 'layouts/header/header';
+@import 'layouts/header/topbar';
+@import 'layouts/header/search';
+
+// Aside
+@import 'layouts/aside/aside-left';
+@import 'layouts/aside/aside-right';
+@import 'layouts/aside/aside-header-menu-mobile';
+
+
