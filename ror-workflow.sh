@@ -27,69 +27,99 @@ echo "
 #                            #
 # ############################"
                                                                               # The Begining
-mkdir projects/$1                                                             # 0 -
-cd projects/$1                                                                # 1 -
-cp ../../templates/Gemfile ../../templates/.gitignore .                       # 1 - Copy the Gemfile and .gitignore to the application folder
-bundle install                                                                # 2 - Install Bundles
+mkdir projects/$1                                                             # -
+cd projects/$1                                                                # -
+cp ../../templates/Gemfile ../../templates/.gitignore .                       # - Copy the Gemfile and .gitignore to the application folder
+bundle install                                                                # - Install Bundles
 bundle exec rails new . -d mysql --webpack --skip-git \
---skip-gemfile --skip-test                                                    # 3 - Create the New APP
-cp ../../templates/config/webpacker.yml config/                               # 4 - Copy webpacker.yml
-rake db:create                                                                # 5 - Create a Database
-bundle exec rails generate rspec:install                                      # 8 - Install Rspec
-bundle exec rails generate cucumber:install                                   # 9 - Install Cucumber
-bundle exec rails generate devise:install                                     # 10 - Install Devise, plus generate the Views and the Migration
-bundle exec rails generate devise:views                                       # 11
-bundle exec rails generate devise User                                        # 12
+--skip-gemfile --skip-test                                                    # - Create the New APP
+cp ../../templates/config/webpacker.yml config/                               # - Copy webpacker.yml
+rake db:create                                                                # - Create a Database
+bundle exec rails generate rspec:install                                      # - Install Rspec
+bundle exec rails generate cucumber:install                                   # - Install Cucumber
+bundle exec rails generate devise:install                                     # - Install Devise, plus generate the Views and the Migration
+bundle exec rails generate devise:views                                       # -
+bundle exec rails generate devise User                                        # -
 bundle exec rails generate controller home index\
  --no-helper --no-assets --no-controller-specs --no-view-specs
-cp ../../templates/config/routes.rb config/                                   # 14 - Add Devise and Home routes
-echo "'rails_helper.rb' will be modified with the new version"                # 15 -
-cp ../../templates/spec/rails_helper.rb spec/                                 # 16 -
-mkdir spec/factories                                                          # 17 -
-cp ../../templates/spec/factories/users.rb spec/factories/                    # 18 -
-guard init rspec                                                              # 19 -
-cp ../../templates/package.json .                                             # 20 -
-sed "s/my-app/$1/" package.json > package2.json                               # 21 -
-rm package.json                                                               # 22 -
-mv package2.json package.json                                                 # 23 -
+cp ../../templates/config/routes.rb config/                                   # - Add Devise and Home routes
+echo "'rails_helper.rb' will be modified with the new version"                # -
+cp ../../templates/spec/rails_helper.rb spec/                                 # -
+mkdir spec/factories                                                          # -
+cp ../../templates/spec/factories/users.rb spec/factories/                    # -
+guard init rspec                                                              # -
+
+echo "
+# ###########################
+#                           #
+#           Webpack         #
+#                           #
+# ###########################
+"
+cp ../../templates/package.json .                                             # -
+sed "s/my-app/$1/" package.json > package2.json                               # -
+rm package.json                                                               # -
+mv package2.json package.json                                                 # -
 yarn install
-cp -R ../../templates/config/webpack config/                                  # 23 -
+cp -R ../../templates/config/webpack config/                                  # -
 rm -r app/assets app/javascript
-cp -r ../../templates/app/javascript app/                                     # 25 -
-cp -r ../../templates/app/assets app/                                         # 26 -
-cp ../../templates/app/views/layouts/* app/views/layouts/                     # 29 -
-sed "s/myApp/$1/" app/views/layouts/application.html.erb >\
-app/views/layouts/application.html.erb2
-rm app/views/layouts/application.html.erb2                                    # 30 -
-mv app/views/layouts/application.html.erb2\
-app/views/layouts/application.html.erb
-rm README.md                                                                  # 31 -
-echo "# $1" > README.md                                                       # 32 -
-rails db:environment:set RAILS_ENV=development                                # 33 -
-rake db:migrate RAILS_ENV=development                                         # 34 -
+cp -r ../../templates/app/javascript app/                                     # -
+cp -r ../../templates/app/assets app/                                         # -
+cp ../../templates/app/views/layouts/* app/views/layouts/                     # -
 
 echo "
 # ###########################
 #                           #
 #                           #
 #                           #
-#       2- Deployment       #
+#       3- HTML Views       #
 #                           #
 #                           #
 #                           #
 # ###########################
 "
-heroku login                                                                 # 35 - Heroku Login
-heroku apps:create sinjapp-$1                                                # 36 - Create a Heroku Application
-heroku git:remote -a sinjapp-$1                                              # 37 - Select the Application
-heroku addons:create cleardb:ignite                                          # 38 - Attach cleardb to the Application
-DATABASE_URL=$(heroku config | grep CLEARDB_DATABASE_URL)                    # 39 - Set the new cleardb database URL
-ORIGINAL_NAME="CLEARDB_DATABASE_URL: mysql"                                  # 40 -
-NEW_NAME="mysql2"                                                            # 41 -
-DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}                   # 42 -
-heroku config:set DATABASE_URL=$DATABASE_NEW_URL                             # 43 -
-echo "\n\nCreate a New Github Repository with the name $1"                   # 44 -
-read -p "Did '$1' exisit on your Github repositories? (y/n) " -n 1           # 45 -
+sed "s/myApp/$1/" app/views/layouts/application.html.erb >\
+app/views/layouts/application.html.erb2
+rm app/views/layouts/application.html.erb2
+mv app/views/layouts/application.html.erb2\
+app/views/layouts/application.html.erb
+
+echo "
+# ###########################
+#                           #
+#      Admin Dashboard      #
+#                           #
+# ###########################
+"
+
+
+rm README.md                                                                  # -
+echo "# $1" > README.md                                                       # -
+rails db:environment:set RAILS_ENV=development                                # -
+rake db:migrate RAILS_ENV=development                                         # -
+
+echo "
+# ###########################
+#                           #
+#                           #
+#                           #
+#       4- Deployment       #
+#                           #
+#                           #
+#                           #
+# ###########################
+"
+heroku login                                                                 # - Heroku Login
+heroku apps:create sinjapp-$1                                                # - Create a Heroku Application
+heroku git:remote -a sinjapp-$1                                              # - Select the Application
+heroku addons:create cleardb:ignite                                          # - Attach cleardb to the Application
+DATABASE_URL=$(heroku config | grep CLEARDB_DATABASE_URL)                    # - Set the new cleardb database URL
+ORIGINAL_NAME="CLEARDB_DATABASE_URL: mysql"                                  # -
+NEW_NAME="mysql2"                                                            # -
+DATABASE_NEW_URL=${DATABASE_URL//$ORIGINAL_NAME/$NEW_NAME}                   # -
+heroku config:set DATABASE_URL=$DATABASE_NEW_URL                             # -
+echo "\n\nCreate a New Github Repository with the name $1"                   # -
+read -p "Did '$1' exist on your Github repositories? (y/n) " -n 1           # -
 
 #
 #
@@ -97,11 +127,11 @@ read -p "Did '$1' exisit on your Github repositories? (y/n) " -n 1           # 4
 #
 # If the github repository is created
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    git init                                                                # 46 -
-    git add -A                                                              # 47 -
-    git remote add origin https://github.com/Clarkom/$1.git                 # 48 -
-    git commit -m "Hello World"                                             # 49 -
-    git push -u origin master                                               # 50 -
+    git init                                                                # -
+    git add -A                                                              # -
+    git remote add origin https://github.com/Clarkom/$1.git                 # -
+    git commit -m "Hello World"                                             # -
+    git push -u origin master                                               # -
                                                                             # The End
     echo "
     # ###########################
